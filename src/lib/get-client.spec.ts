@@ -21,4 +21,6 @@ test('get-client.ts', async t => {
   });
 
   await getClient('ws://localhost:8080');
+
+  server.close();
 });
