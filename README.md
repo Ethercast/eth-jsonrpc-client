@@ -1,4 +1,5 @@
-# @ethercast/eth-jsonrpc-client
+# eth-jsonrpc-client
+[![Build Status](https://travis-ci.org/Ethercast/eth-jsonrpc-client.svg?branch=master)](https://travis-ci.org/Ethercast/eth-jsonrpc-client)
 
 JSON RPC client for Ethereum clients (geth/parity)
 
