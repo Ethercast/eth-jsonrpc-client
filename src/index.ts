@@ -1,4 +1,10 @@
-import EthClient, { BlockParameter, LogFilter, Method, NumberLike, SendTransactionParameters } from './lib/eth-client';
+import EthClient, {
+  BlockParameter,
+  LogFilter,
+  Method,
+  NumberLike,
+  SendTransactionParameters
+} from './lib/eth-client';
 import EthHTTPSClient from './lib/eth-https-client';
 import EthWSClient from './lib/eth-ws-client';
 import getClient from './lib/get-client';
@@ -10,5 +16,9 @@ export {
   EthWSClient,
   ValidatedEthClient,
   getClient,
-  SendTransactionParameters, LogFilter, NumberLike, BlockParameter, Method
+  SendTransactionParameters,
+  LogFilter,
+  NumberLike,
+  BlockParameter,
+  Method
 };
