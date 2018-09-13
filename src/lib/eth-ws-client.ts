@@ -10,7 +10,10 @@ import { buildRequest, MethodParameter } from './util';
 import WebSocket from 'ws';
 
 export default class EthWSClient implements EthClient {
-  public static Connect(nodeUrl: string, timeoutMs: number = 5000): Promise<EthWSClient> {
+  public static Connect(
+    nodeUrl: string,
+    timeoutMs: number = 5000
+  ): Promise<EthWSClient> {
     return new Promise<EthWSClient>((resolve, reject) => {
       try {
         const ws = new WebSocket(nodeUrl);
@@ -51,7 +54,9 @@ export default class EthWSClient implements EthClient {
     hash: string,
     includeFullTransactions: boolean
   ): any {
-    return this.cmd<BlockWithFullTransactions | BlockWithTransactionHashes | null>(Method.eth_getBlockByHash, hash, includeFullTransactions).then(block => {
+    return this.cmd<
+      BlockWithFullTransactions | BlockWithTransactionHashes | null
+    >(Method.eth_getBlockByHash, hash, includeFullTransactions).then(block => {
       if (block === null) {
         throw new Error('block by number does not exist');
       }
@@ -73,7 +78,9 @@ export default class EthWSClient implements EthClient {
     blockNumber: BlockParameter,
     includeFullTransactions: boolean
   ): any {
-    return this.cmd<BlockWithFullTransactions | BlockWithTransactionHashes | null>(Method.eth_getBlockByNumber, blockNumber, includeFullTransactions).then(
+    return this.cmd<
+      BlockWithFullTransactions | BlockWithTransactionHashes | null
+    >(Method.eth_getBlockByNumber, blockNumber, includeFullTransactions).then(
       block => {
         if (block === null) {
           throw new Error('block by number does not exist');

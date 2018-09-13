@@ -9,15 +9,9 @@ import EthWSClient from './eth-ws-client';
  */
 export default async function getClient(nodeUrl: string): Promise<EthClient> {
   const lower = nodeUrl.toLowerCase();
-  if (
-    lower.indexOf('https:/') === 0 ||
-    lower.indexOf('http:/') === 0
-  ) {
+  if (lower.indexOf('https:/') === 0 || lower.indexOf('http:/') === 0) {
     return new EthHTTPSClient({ endpointUrl: nodeUrl });
-  } else if (
-    lower.indexOf('wss:/') === 0 ||
-    lower.indexOf('ws:/') === 0
-  ) {
+  } else if (lower.indexOf('wss:/') === 0 || lower.indexOf('ws:/') === 0) {
     return EthWSClient.Connect(nodeUrl);
   } else {
     throw new Error(`unknown url protocol in url "${nodeUrl}"`);
