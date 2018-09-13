@@ -7,6 +7,7 @@ import * as WebSocket from 'ws';
 
 import ganache from 'ganache-cli';
 import getClient from './get-client';
+import ValidatedEthClient from './validated-eth-client';
 
 const TEST_MNEMONIC =
   'cave future movie dentist tumble stone ready coach sword agree oblige maximum hero hockey blouse';
@@ -50,7 +51,13 @@ test.beforeEach(async t => {
 
 _.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
   test.serial(`eth-client@${addr}`, async t => {
-    const cli = await getClient(addr);
+    const cli = new ValidatedEthClient(await getClient(addr));
+
+    const version = await cli.net_version();
+    t.truthy(typeof version === 'number');
+
+    const clientVersion = await cli.web3_clientVersion();
+    t.truthy(typeof clientVersion === 'string');
 
     // block number is 0
     t.true(new BigNumber(0).isEqualTo(await cli.eth_blockNumber()));
@@ -69,6 +76,11 @@ _.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
     // get tx by hash
     const txReceipt = await cli.eth_getTransactionReceipt(hash);
 
+    {
+      const [receipt] = await cli.eth_getTransactionReceipts([hash]);
+      t.deepEqual(receipt, txReceipt);
+    }
+
     t.log('tx receipt', txReceipt);
 
     t.true(new BigNumber(1).isEqualTo(txReceipt.blockNumber));
@@ -78,6 +90,17 @@ _.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
     t.true(new BigNumber(1).isEqualTo(block.number));
     t.deepEqual(txReceipt.blockHash, block.hash);
     t.deepEqual(block.transactions.length, 1);
+    t.deepEqual(block.transactions[0].hash, txReceipt.transactionHash);
+
+    const blockWithHashes = await cli.eth_getBlockByHash(
+      txReceipt.blockHash,
+      false
+    );
+    t.deepEqual(blockWithHashes.transactions[0], txReceipt.transactionHash);
+
+    // by number works too
+    t.deepEqual(await cli.eth_getBlockByNumber(1, true), block);
+    t.deepEqual(await cli.eth_getBlockByNumber(1, false), blockWithHashes);
 
     const logs = await cli.eth_getLogs({ fromBlock: 1, toBlock: 1 });
     t.deepEqual(logs, []);

@@ -116,14 +116,14 @@ export default class EthWSClient implements EthClient {
   }
 
   public async eth_getTransactionReceipts(
-    hash: string[]
+    hashes: string[]
   ): Promise<TransactionReceipt[]> {
-    if (hash.length === 0) {
+    if (hashes.length === 0) {
       return [];
     }
 
     // this is cheaper over websockets
-    return Promise.all(hash.map(this.eth_getTransactionReceipt));
+    return Promise.all(hashes.map(h => this.eth_getTransactionReceipt(h)));
   }
 
   public eth_sendTransaction(
