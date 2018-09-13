@@ -48,7 +48,7 @@ test.beforeEach(async t => {
   });
 });
 
-_.each([ 'http://localhost:8081', 'ws://localhost:8082' ], addr =>
+_.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
   test.serial(`eth-client@${addr}`, async t => {
     const cli = await getClient(addr);
 
@@ -56,8 +56,8 @@ _.each([ 'http://localhost:8081', 'ws://localhost:8082' ], addr =>
     t.true(new BigNumber(0).isEqualTo(await cli.eth_blockNumber()));
 
     const hash = await cli.eth_sendTransaction({
-      from: ADDRESSES[ 0 ],
-      to: ADDRESSES[ 1 ],
+      from: ADDRESSES[0],
+      to: ADDRESSES[1],
       value: 1000
     });
 
