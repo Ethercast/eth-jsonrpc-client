@@ -105,7 +105,7 @@ export default class ValidatedEthClient implements EthClient {
   public eth_sendTransaction(
     params: SendTransactionParameters
   ): Promise<string> {
-    return this.cmd<string>(Method.eth_sendTransaction, [params]).then(s => {
+    return this.client.eth_sendTransaction(params).then(s => {
       if (typeof s !== 'string' || s.length !== 66) {
         throw new Error(`invalid transaction receipt: ${s}`);
       }
