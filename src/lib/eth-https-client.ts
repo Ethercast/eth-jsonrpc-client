@@ -6,7 +6,12 @@ import {
 } from '@ethercast/model';
 import BigNumber from 'bignumber.js';
 import fetch from 'node-fetch';
-import EthClient, { BlockParameter, LogFilter, Method } from './eth-client';
+import EthClient, {
+  BlockParameter,
+  LogFilter,
+  Method,
+  SendTransactionParameters
+} from './eth-client';
 import { buildRequest, MethodParameter } from './util';
 
 export default class EthHTTPSClient implements EthClient {
@@ -32,7 +37,8 @@ export default class EthHTTPSClient implements EthClient {
   ): any {
     return this.cmd<BlockWithFullTransactions | BlockWithTransactionHashes>(
       Method.eth_getBlockByHash,
-      [hash, includeFullTransactions]
+      hash,
+      includeFullTransactions
     ).then(block => {
       if (block === null) {
         throw new Error(`block by hash does not exist: ${hash}`);
@@ -58,7 +64,8 @@ export default class EthHTTPSClient implements EthClient {
   ): any {
     return this.cmd<BlockWithFullTransactions | BlockWithTransactionHashes>(
       Method.eth_getBlockByNumber,
-      [blockNumber, includeFullTransactions]
+      blockNumber,
+      includeFullTransactions
     ).then(block => {
       if (block === null) {
         throw new Error(`block by number does not exist: ${blockNumber}`);
@@ -78,12 +85,13 @@ export default class EthHTTPSClient implements EthClient {
     this.cmd<string>(Method.eth_blockNumber).then(s => new BigNumber(s));
 
   public eth_getLogs = (filter: LogFilter) =>
-    this.cmd<Log[]>(Method.eth_getLogs, [filter]);
+    this.cmd<Log[]>(Method.eth_getLogs, filter);
 
   public eth_getTransactionReceipt(hash: string): Promise<TransactionReceipt> {
-    return this.cmd<TransactionReceipt>(Method.eth_getTransactionReceipt, [
+    return this.cmd<TransactionReceipt>(
+      Method.eth_getTransactionReceipt,
       hash
-    ]).then(receipt => {
+    ).then(receipt => {
       if (receipt === null) {
         throw new Error('invalid transaction hash');
       }
@@ -116,16 +124,32 @@ export default class EthHTTPSClient implements EthClient {
     });
   }
 
-  private async cmd<TResponse>(
+  public eth_sendTransaction(
+    params: SendTransactionParameters
+  ): Promise<string> {
+    return this.cmd<string>(Method.eth_sendTransaction, params);
+  }
+
+  public async cmd<TResponse>(
     method: Method,
-    params: MethodParameter[] = []
+    ...params: MethodParameter[]
   ): Promise<TResponse> {
     const request = buildRequest(method, params);
 
     const json = await this.rpc<any>(request);
 
+    if (typeof json.error !== 'undefined') {
+      throw new Error(
+        `json rpc threw error code ${json.error.code}: ${json.error.message}`
+      );
+    }
+
     if (typeof json.result === 'undefined') {
-      throw new Error(`failed to fetch: no 'result' key found in the body`);
+      throw new Error(
+        `failed to fetch: no 'result' key found in the body: ${JSON.stringify(
+          json
+        )}`
+      );
     }
 
     return json.result;

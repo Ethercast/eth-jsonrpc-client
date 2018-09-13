@@ -30,8 +30,10 @@ test('util.ts#serializeToMethodParameter', t => {
 });
 
 test('util.ts#buildRequest', t => {
+  let nextId = buildRequest(Method.eth_blockNumber, []).id + 1;
+
   t.deepEqual(buildRequest(Method.eth_blockNumber, []), {
-    id: 1,
+    id: nextId++,
     jsonrpc: '2.0',
     method: Method.eth_blockNumber,
     params: []

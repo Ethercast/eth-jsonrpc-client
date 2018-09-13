@@ -13,7 +13,7 @@ test('get-client.ts', async t => {
   // this should fail with timeout
   await t.throwsAsync(getClient('ws://localhost:8080'));
 
-  // start a ws server for ethwsclient
+  // start a ws server for ethwsclient so it succeeds to connect
   const server = new WebSocket.Server({ port: 8080 });
 
   server.addListener('connection', (_: any, req: any) => {

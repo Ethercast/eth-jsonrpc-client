@@ -4,7 +4,12 @@ import {
   TransactionReceipt
 } from '@ethercast/model';
 import BigNumber from 'bignumber.js';
-import EthClient, { BlockParameter, LogFilter, Method } from './eth-client';
+import EthClient, {
+  BlockParameter,
+  LogFilter,
+  Method,
+  SendTransactionParameters
+} from './eth-client';
 import { buildRequest, MethodParameter } from './util';
 
 import WebSocket from 'ws';
@@ -18,14 +23,19 @@ export default class EthWSClient implements EthClient {
       try {
         const ws = new WebSocket(nodeUrl);
 
-        const timeout = setTimeout(() => {
-          reject(new Error('connection open timed out'));
+        const timer = setTimeout(() => {
+          reject(new Error(`connection open timed out after ${timeoutMs}ms`));
         }, timeoutMs);
 
         // when the connection opens, we're ready to send requests
         ws.on('open', () => {
-          clearTimeout(timeout);
+          clearTimeout(timer);
           resolve(new EthWSClient({ ws }));
+        });
+
+        ws.on('error', err => {
+          clearTimeout(timer);
+          reject(err);
         });
       } catch (err) {
         reject(err);
@@ -116,7 +126,13 @@ export default class EthWSClient implements EthClient {
     return Promise.all(hash.map(this.eth_getTransactionReceipt));
   }
 
-  private async cmd<TResponse>(
+  public eth_sendTransaction(
+    params: SendTransactionParameters
+  ): Promise<string> {
+    return this.cmd<string>(Method.eth_sendTransaction, params);
+  }
+
+  public async cmd<TResponse>(
     method: Method,
     ...params: MethodParameter[]
   ): Promise<TResponse> {
@@ -141,7 +157,7 @@ export default class EthWSClient implements EthClient {
             if (msgData.id === request.id) {
               resolve(msgData.result);
               resolved = true;
-              this.ws.removeEventListener('message', listener as any);
+              this.ws.removeEventListener('message', listener);
             }
           } catch (error) {
             reject(`failed to parse message response: ${event.data}`);
@@ -149,13 +165,13 @@ export default class EthWSClient implements EthClient {
         }
       };
 
-      this.ws.addEventListener('message', listener as any);
+      this.ws.addEventListener('message', listener);
 
       this.ws.send(JSON.stringify(request));
 
       setTimeout(() => {
         if (!resolved) {
-          this.ws.removeEventListener('message', listener as any);
+          this.ws.removeEventListener('message', listener);
           reject(new Error('request timed out'));
         }
       }, 5000);

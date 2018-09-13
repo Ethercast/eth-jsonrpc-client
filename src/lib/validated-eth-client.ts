@@ -9,7 +9,13 @@ import {
   TransactionReceipt
 } from '@ethercast/model';
 import BigNumber from 'bignumber.js';
-import EthClient, { BlockParameter, LogFilter } from './eth-client';
+import EthClient, {
+  BlockParameter,
+  LogFilter,
+  Method,
+  SendTransactionParameters
+} from './eth-client';
+import { MethodParameter } from './util';
 
 export default class ValidatedEthClient implements EthClient {
   private client: EthClient;
@@ -94,5 +100,24 @@ export default class ValidatedEthClient implements EthClient {
     return this.client
       .eth_getTransactionReceipts(hashes)
       .then(receipts => receipts.map(mustBeValidTransactionReceipt));
+  }
+
+  public eth_sendTransaction(
+    params: SendTransactionParameters
+  ): Promise<string> {
+    return this.cmd<string>(Method.eth_sendTransaction, [params]).then(s => {
+      if (typeof s !== 'string' || s.length !== 66) {
+        throw new Error(`invalid transaction receipt: ${s}`);
+      }
+
+      return s;
+    });
+  }
+
+  public cmd<TResponse>(
+    method: Method,
+    ...params: MethodParameter[]
+  ): Promise<TResponse> {
+    return this.client.cmd(method, params);
   }
 }
