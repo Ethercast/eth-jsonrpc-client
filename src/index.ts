@@ -1,19 +1,19 @@
 import EthClient, {
   BlockParameter,
   LogFilter,
-  Method,
   NumberLike,
   SendTransactionParameters
 } from './lib/eth-client';
-import EthHTTPSClient from './lib/eth-https-client';
-import EthWSClient from './lib/eth-ws-client';
+import EthHTTPClient from './lib/eth-http-client';
+import EthWebSocketClient from './lib/eth-web-socket-client';
 import getClient from './lib/get-client';
+import { Method } from './lib/json-rpc-methods';
 import ValidatedEthClient from './lib/validated-eth-client';
 
 export {
   EthClient,
-  EthHTTPSClient,
-  EthWSClient,
+  EthHTTPClient,
+  EthWebSocketClient,
   ValidatedEthClient,
   getClient,
   SendTransactionParameters,

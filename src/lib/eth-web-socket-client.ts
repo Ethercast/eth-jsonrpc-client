@@ -7,19 +7,22 @@ import BigNumber from 'bignumber.js';
 import EthClient, {
   BlockParameter,
   LogFilter,
-  Method,
   SendTransactionParameters
 } from './eth-client';
+import { Method } from './json-rpc-methods';
 import { buildRequest, MethodParameter } from './util';
 
-import WebSocket from 'ws';
+import WebSocket from 'isomorphic-ws';
 
-export default class EthWSClient implements EthClient {
+/**
+ * This client interacts with the JSON RPC via a WebSocket connection
+ */
+export default class EthWebSocketClient implements EthClient {
   public static Connect(
     nodeUrl: string,
     timeoutMs: number = 5000
-  ): Promise<EthWSClient> {
-    return new Promise<EthWSClient>((resolve, reject) => {
+  ): Promise<EthWebSocketClient> {
+    return new Promise<EthWebSocketClient>((resolve, reject) => {
       try {
         const ws = new WebSocket(nodeUrl);
 
@@ -30,7 +33,7 @@ export default class EthWSClient implements EthClient {
         // when the connection opens, we're ready to send requests
         ws.on('open', () => {
           clearTimeout(timer);
-          resolve(new EthWSClient({ ws }));
+          resolve(new EthWebSocketClient({ ws }));
         });
 
         ws.on('error', err => {
@@ -43,7 +46,8 @@ export default class EthWSClient implements EthClient {
     });
   }
 
-  private ws: WebSocket;
+  private readonly ws: WebSocket;
+  private nextRequestId: number = 1;
 
   constructor({ ws }: { ws: WebSocket }) {
     this.ws = ws;
@@ -141,7 +145,7 @@ export default class EthWSClient implements EthClient {
     }
 
     return new Promise<any>((resolve, reject) => {
-      const request = buildRequest(method, params);
+      const request = buildRequest(this.nextRequestId++, method, params);
 
       let resolved = false;
 

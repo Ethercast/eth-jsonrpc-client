@@ -31,10 +31,11 @@
     "cov": "run-s build test:unit cov:html && opn coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "cov:check": "nyc report && nyc check-coverage --lines 87 --functions 95 --branches 75",
+    "cov:check": "nyc report && nyc check-coverage --lines 90 --functions 96 --branches 75",
     "doc": "run-s doc:html && opn build/docs/index.html",
-    "doc:html": "typedoc src/index.ts --target ES6 --mode file --out build/docs",
-    "doc:json": "typedoc src/index.ts --target ES6 --mode file --json build/docs/typedoc.json",
+    "typedoc": "typedoc src/index.ts --target ES6 --mode file --excludePrivate",
+    "doc:html": "npm run typedoc -- --out build/docs",
+    "doc:json": "npm run typedoc -- --json build/docs/typedoc.json",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
@@ -61,15 +62,12 @@
   "dependencies": {
     "@ethercast/model": "0.0.17",
     "bignumber.js": "^7.2.1",
-    "joi": "^13.6.0",
-    "node-fetch": "^2.2.0",
-    "underscore": "^1.9.1",
-    "ws": "^6.0.0"
+    "cross-fetch": "^2.2.2",
+    "isomorphic-ws": "^4.0.1",
+    "joi": "^13.6.0"
   },
   "devDependencies": {
     "@types/joi": "^13.4.4",
-    "@types/node-fetch": "^2.1.2",
-    "@types/underscore": "^1.8.9",
     "@types/ws": "^6.0.1",
     "ava": "1.0.0-beta.7",
     "codecov": "^3.0.2",
@@ -86,7 +84,8 @@
     "tslint-config-prettier": "^1.13.0",
     "tslint-immutable": "^4.5.4",
     "typedoc": "^0.12.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "ws": "^6.0.0"
   },
   "ava": {
     "failFast": true,

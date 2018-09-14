@@ -5,31 +5,21 @@ import {
   TransactionReceipt
 } from '@ethercast/model';
 import BigNumber from 'bignumber.js';
-import { MethodParameter } from './util';
-
-export enum Method {
-  web3_clientVersion = 'web3_clientVersion',
-  eth_getBlockByHash = 'eth_getBlockByHash',
-  eth_blockNumber = 'eth_blockNumber',
-  eth_getBlockByNumber = 'eth_getBlockByNumber',
-  eth_getLogs = 'eth_getLogs',
-  net_version = 'net_version',
-  eth_getTransactionReceipt = 'eth_getTransactionReceipt',
-  eth_sendTransaction = 'eth_sendTransaction'
-}
+import { Method } from './json-rpc-methods';
+import { MethodParameter, MethodParameterObject } from './util';
 
 export type NumberLike = string | number | BigNumber;
 
 export type BlockParameter = NumberLike | 'earliest' | 'latest' | 'pending';
 
-export interface LogFilter {
+export interface LogFilter extends MethodParameterObject {
   topics?: Array<string | string[]>;
   fromBlock: BlockParameter;
   toBlock: BlockParameter;
   address?: string;
 }
 
-export interface SendTransactionParameters {
+export interface SendTransactionParameters extends MethodParameterObject {
   from: string;
   to?: string;
   gas?: NumberLike;
@@ -39,6 +29,9 @@ export interface SendTransactionParameters {
   nonce?: NumberLike;
 }
 
+/**
+ * This is the interface exposed by all the implementations of the clients
+ */
 export default interface EthClient {
   net_version(): Promise<number>;
 

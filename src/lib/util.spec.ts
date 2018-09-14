@@ -1,6 +1,6 @@
 import test from 'ava';
 import BigNumber from 'bignumber.js';
-import { Method } from './eth-client';
+import { Method } from './json-rpc-methods';
 import { buildRequest, serializeToMethodParameter } from './util';
 
 test('util.ts#serializeToMethodParameter', t => {
@@ -30,10 +30,8 @@ test('util.ts#serializeToMethodParameter', t => {
 });
 
 test('util.ts#buildRequest', t => {
-  let nextId = buildRequest(Method.eth_blockNumber, []).id + 1;
-
-  t.deepEqual(buildRequest(Method.eth_blockNumber, []), {
-    id: nextId++,
+  t.deepEqual(buildRequest(15, Method.eth_blockNumber, []), {
+    id: 15,
     jsonrpc: '2.0',
     method: Method.eth_blockNumber,
     params: []

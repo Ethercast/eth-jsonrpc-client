@@ -1,12 +1,24 @@
 import BigNumber from 'bignumber.js';
-import * as _ from 'underscore';
-import { Method } from './eth-client';
+import { Method } from './json-rpc-methods';
 import toHex from './to-hex';
 
-export type MethodParameter = boolean | string | number | BigNumber | object;
+export type MethodParameter =
+  | boolean
+  | string
+  | number
+  | BigNumber
+  | MethodParameterObject
+  | MethodParameterArray;
+
+export interface MethodParameterObject {
+  [key: string]: MethodParameter | undefined;
+}
+
+export interface MethodParameterArray extends Array<MethodParameter> {}
 
 /**
  * Takes a method parameter and serializes it to something that the JSON RPC accepts
+ * @hidden
  * @param param parameter that should be serialized
  */
 export function serializeToMethodParameter(param: any): MethodParameter {
@@ -17,10 +29,18 @@ export function serializeToMethodParameter(param: any): MethodParameter {
       }
 
       if (Array.isArray(param)) {
-        return _.map(param, serializeToMethodParameter);
+        return param.map(serializeToMethodParameter);
       }
 
-      return _.mapObject(param, serializeToMethodParameter);
+      const serializedObject: { [key: string]: MethodParameter } = {};
+
+      for (const k in param) {
+        if (param.hasOwnProperty(k)) {
+          serializedObject[k] = serializeToMethodParameter(param[k]);
+        }
+      }
+
+      return serializedObject;
 
     case 'string':
       return param;
@@ -36,11 +56,20 @@ export function serializeToMethodParameter(param: any): MethodParameter {
   }
 }
 
-let nextId = 1;
-
-export function buildRequest(method: Method, params: MethodParameter[]) {
+/**
+ * Build a request for sending to the JSON RPC
+ * @param id of the request
+ * @param method method for the request
+ * @param params parameters to be serialized to the request
+ * @hidden
+ */
+export function buildRequest(
+  id: number,
+  method: Method,
+  params: MethodParameter[]
+) {
   return {
-    id: nextId++,
+    id,
     jsonrpc: '2.0',
     method,
     params: serializeToMethodParameter(params)

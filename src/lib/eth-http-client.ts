@@ -5,17 +5,21 @@ import {
   TransactionReceipt
 } from '@ethercast/model';
 import BigNumber from 'bignumber.js';
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import EthClient, {
   BlockParameter,
   LogFilter,
-  Method,
   SendTransactionParameters
 } from './eth-client';
+import { Method } from './json-rpc-methods';
 import { buildRequest, MethodParameter } from './util';
 
-export default class EthHTTPSClient implements EthClient {
+/**
+ * This client interacts with the JSON RPC via HTTP/HTTPS
+ */
+export default class EthHTTPClient implements EthClient {
   private readonly endpointUrl: string;
+  private nextRequestId: number = 1;
 
   constructor({ endpointUrl }: { endpointUrl: string }) {
     this.endpointUrl = endpointUrl;
@@ -108,7 +112,11 @@ export default class EthHTTPSClient implements EthClient {
     }
 
     const results = await this.rpc<any>(
-      hashes.map(hash => buildRequest(Method.eth_getTransactionReceipt, [hash]))
+      hashes.map(hash =>
+        buildRequest(this.nextRequestId++, Method.eth_getTransactionReceipt, [
+          hash
+        ])
+      )
     );
 
     return results.map(({ result }: { result: any }) => {
@@ -134,7 +142,7 @@ export default class EthHTTPSClient implements EthClient {
     method: Method,
     ...params: MethodParameter[]
   ): Promise<TResponse> {
-    const request = buildRequest(method, params);
+    const request = buildRequest(this.nextRequestId++, method, params);
 
     const json = await this.rpc<any>(request);
 

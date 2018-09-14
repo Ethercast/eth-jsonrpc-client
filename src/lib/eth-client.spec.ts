@@ -1,12 +1,12 @@
 import test from 'ava';
 import BigNumber from 'bignumber.js';
+import fetch from 'cross-fetch';
 import { Http2Server } from 'http2';
-import fetch from 'node-fetch';
-import * as _ from 'underscore';
 import * as WebSocket from 'ws';
 
 import ganache from 'ganache-cli';
 import getClient from './get-client';
+import { Method } from './json-rpc-methods';
 import ValidatedEthClient from './validated-eth-client';
 
 const TEST_MNEMONIC =
@@ -31,25 +31,20 @@ test.beforeEach(async t => {
     t.log('connection opened');
 
     // connection occured
-    sock.on('message', data => {
-      fetch(`http://localhost:8081/rpc`, {
+    sock.on('message', async data => {
+      const res = await fetch(`http://localhost:8081/rpc`, {
         body: data.toString(),
         method: 'POST'
-      })
-        .then(res => {
-          return res.text();
-        })
-        .then(text => {
-          sock.send(text);
-        })
-        .catch(err => {
-          sock.close(400, `error: ${err.message}`);
-        });
+      });
+
+      const text = await res.text();
+
+      sock.send(text);
     });
   });
 });
 
-_.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
+['http://localhost:8081', 'ws://localhost:8082'].forEach(addr =>
   test.serial(`eth-client@${addr}`, async t => {
     const cli = new ValidatedEthClient(await getClient(addr));
 
@@ -104,6 +99,13 @@ _.each(['http://localhost:8081', 'ws://localhost:8082'], addr =>
 
     const logs = await cli.eth_getLogs({ fromBlock: 1, toBlock: 1 });
     t.deepEqual(logs, []);
+
+    const sha3 = await cli.cmd<string>(
+      Method.web3_sha3,
+      '0x68656c6c6f20776f726c64'
+    );
+
+    t.truthy(/^0x[a-fA-F0-9]{64}$/.test(sha3));
   })
 );
 

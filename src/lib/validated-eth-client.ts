@@ -12,9 +12,9 @@ import BigNumber from 'bignumber.js';
 import EthClient, {
   BlockParameter,
   LogFilter,
-  Method,
   SendTransactionParameters
 } from './eth-client';
+import { Method } from './json-rpc-methods';
 import { MethodParameter } from './util';
 
 export default class ValidatedEthClient implements EthClient {

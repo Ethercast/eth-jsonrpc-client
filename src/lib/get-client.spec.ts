@@ -1,11 +1,13 @@
 import test from 'ava';
 import * as WebSocket from 'ws';
-import EthHTTPSClient from './eth-https-client';
+import EthHTTPClient from './eth-http-client';
 import getClient from './get-client';
+import ValidatedEthClient from './validated-eth-client';
 
 test('get-client.ts', async t => {
   t.true(getClient('http://localhost:8500') instanceof Promise);
-  t.true((await getClient('http://localhost:8500')) instanceof EthHTTPSClient);
+  t.true((await getClient('http://localhost:8500')) instanceof EthHTTPClient);
+  t.true((await getClient('http://localhost:8500', true)) instanceof ValidatedEthClient);
 
   await t.throwsAsync(getClient('htt://localhost:8500'));
   await t.throwsAsync(getClient('wsc://localhost:8500'));
