@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@ethercast/eth-jsonrpc-client</title>
+	<title>MethodParameterObject | @ethercast/eth-jsonrpc-client</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@ethercast/eth-jsonrpc-client</a>
+					<a href="../index.html" class="title">@ethercast/eth-jsonrpc-client</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,89 +53,92 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="methodparameterobject.html">MethodParameterObject</a>
 				</li>
 			</ul>
-			<h1> @ethercast/eth-jsonrpc-client</h1>
+			<h1>Interface MethodParameterObject</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="eth-jsonrpc-client">eth-jsonrpc-client</h1>
-				<p><a href="https://travis-ci.org/Ethercast/eth-jsonrpc-client"><img src="https://travis-ci.org/Ethercast/eth-jsonrpc-client.svg?branch=master" alt="Build Status"></a>
-				<a href="https://codecov.io/gh/Ethercast/eth-jsonrpc-client"><img src="https://codecov.io/gh/Ethercast/eth-jsonrpc-client/branch/master/graph/badge.svg" alt="codecov"></a></p>
-				<p>Lightweight HTTP and WebSocket JSON RPC client for Ethereum, compatible with both geth and parity, made for polling blocks from Ethercast.
-				Great for when Web3 is too heavy.</p>
-				<h2 id="installation">Installation</h2>
-				<p><code>npm install --save @ethercast/eth-jsonrpc-client</code></p>
-				<h2 id="usage">Usage</h2>
-				<p>There are three main classes exported from this module. <code>EthHTTPClient</code>, <code>EthWebSocketClient</code>, and <code>ValidatedEthClient</code>.</p>
-				<p>To construct a client, call <a href="https://ethercast.github.io/eth-jsonrpc-client/globals.html#getclient"><code>getClient(nodeUrl: string)</code></a>
-				which will construct the appropriate client based on the URL (HTTP or WebSocket) </p>
-				<p>Once you have a client, use one of the supported methods on the interface or call an unsupported method using <code>.cmd</code>, e.g.:</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { EthClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ethercast/eth-jsonrpc-client'</span>;
-<span class="hljs-keyword">import</span> BigNumber <span class="hljs-keyword">from</span> <span class="hljs-string">'bignumber.js'</span>;
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlockNumber</span>(<span class="hljs-params"></span>): <span class="hljs-title">BigNumber</span> </span>{
-    <span class="hljs-keyword">const</span> client: EthClient = getClient(<span class="hljs-string">'http://infura.node.io/my-api-key'</span>);
-    <span class="hljs-keyword">const</span> blockNumber = <span class="hljs-keyword">await</span> client.eth_blockNumber();
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`blockNumber is <span class="hljs-subst">${blockNumber}</span>`</span>);
-}</code></pre>
-				<h2 id="api-docs">API Docs</h2>
-				<p><a href="https://ethercast.github.io/eth-jsonrpc-client/">https://ethercast.github.io/eth-jsonrpc-client/</a></p>
-			</div>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">MethodParameterObject</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="logfilter.html" class="tsd-signature-type">LogFilter</a>
+							</li>
+							<li>
+								<a href="sendtransactionparameters.html" class="tsd-signature-type">SendTransactionParameters</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-kind-interface tsd-is-external">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../globals.html#methodparameter" class="tsd-signature-type">MethodParameter</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-is-external">
-						<a href="enums/method.html" class="tsd-kind-icon">Method</a>
+						<a href="../enums/method.html" class="tsd-kind-icon">Method</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/ethhttpclient.html" class="tsd-kind-icon">EthHTTPClient</a>
+						<a href="../classes/ethhttpclient.html" class="tsd-kind-icon">EthHTTPClient</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/ethwebsocketclient.html" class="tsd-kind-icon">Eth<wbr>Web<wbr>Socket<wbr>Client</a>
+						<a href="../classes/ethwebsocketclient.html" class="tsd-kind-icon">Eth<wbr>Web<wbr>Socket<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/validatedethclient.html" class="tsd-kind-icon">Validated<wbr>Eth<wbr>Client</a>
+						<a href="../classes/validatedethclient.html" class="tsd-kind-icon">Validated<wbr>Eth<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/ethclient.html" class="tsd-kind-icon">Eth<wbr>Client</a>
+						<a href="ethclient.html" class="tsd-kind-icon">Eth<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/logfilter.html" class="tsd-kind-icon">Log<wbr>Filter</a>
+						<a href="logfilter.html" class="tsd-kind-icon">Log<wbr>Filter</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/methodparameterarray.html" class="tsd-kind-icon">Method<wbr>Parameter<wbr>Array</a>
+						<a href="methodparameterarray.html" class="tsd-kind-icon">Method<wbr>Parameter<wbr>Array</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/methodparameterobject.html" class="tsd-kind-icon">Method<wbr>Parameter<wbr>Object</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="methodparameterobject.html" class="tsd-kind-icon">Method<wbr>Parameter<wbr>Object</a>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/sendtransactionparameters.html" class="tsd-kind-icon">Send<wbr>Transaction<wbr>Parameters</a>
+						<a href="sendtransactionparameters.html" class="tsd-kind-icon">Send<wbr>Transaction<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#blockparameter" class="tsd-kind-icon">Block<wbr>Parameter</a>
+						<a href="../globals.html#blockparameter" class="tsd-kind-icon">Block<wbr>Parameter</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#methodparameter" class="tsd-kind-icon">Method<wbr>Parameter</a>
+						<a href="../globals.html#methodparameter" class="tsd-kind-icon">Method<wbr>Parameter</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#numberlike" class="tsd-kind-icon">Number<wbr>Like</a>
+						<a href="../globals.html#numberlike" class="tsd-kind-icon">Number<wbr>Like</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getclient" class="tsd-kind-icon">get<wbr>Client</a>
+						<a href="../globals.html#getclient" class="tsd-kind-icon">get<wbr>Client</a>
 					</li>
 				</ul>
 			</nav>
@@ -205,7 +208,7 @@
 	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
