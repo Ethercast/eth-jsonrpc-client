@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/ethercast/eth-jsonrpc-client/compare/v1.1.1...v1.1.2) (2018-09-17)
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/ethercast/eth-jsonrpc-client/compare/v1.0.6...v1.1.1) (2018-09-14)
 
