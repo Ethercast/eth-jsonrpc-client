@@ -66,23 +66,22 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="eth-jsonrpc-client">eth-jsonrpc-client</h1>
 				<p><a href="https://travis-ci.org/Ethercast/eth-jsonrpc-client"><img src="https://travis-ci.org/Ethercast/eth-jsonrpc-client.svg?branch=master" alt="Build Status"></a>
-				<a href="https://codecov.io/gh/Ethercast/eth-jsonrpc-client"><img src="https://codecov.io/gh/Ethercast/eth-jsonrpc-client/branch/master/graph/badge.svg" alt="codecov"></a></p>
+					<a href="https://codecov.io/gh/Ethercast/eth-jsonrpc-client"><img src="https://codecov.io/gh/Ethercast/eth-jsonrpc-client/branch/master/graph/badge.svg" alt="codecov"></a>
+				<a href="https://www.npmjs.com/package/@ethercast/eth-jsonrpc-client"><img src="https://img.shields.io/npm/v/@ethercast/eth-jsonrpc-client.svg?style=flat" alt="NPM version"></a></p>
 				<p>Lightweight HTTP and WebSocket JSON RPC client for Ethereum, compatible with both geth and parity, made for polling blocks from Ethercast.
 				Great for when Web3 is too heavy.</p>
 				<h2 id="installation">Installation</h2>
 				<p><code>npm install --save @ethercast/eth-jsonrpc-client</code></p>
 				<h2 id="usage">Usage</h2>
-				<p>There are three main classes exported from this module. <code>EthHTTPClient</code>, <code>EthWebSocketClient</code>, and <code>ValidatedEthClient</code>.</p>
-				<p>To construct a client, call <a href="https://ethercast.github.io/eth-jsonrpc-client/globals.html#getclient"><code>getClient(nodeUrl: string)</code></a>
-				which will construct the appropriate client based on the URL (HTTP or WebSocket) </p>
+				<p>To construct a client, call <a href="https://ethercast.github.io/eth-jsonrpc-client/globals.html#getclient"><code>getClient(nodeUrl: string, validated: boolean)</code></a>
+				which will construct the appropriate client based on the URL (HTTP client or WebSocket client) </p>
 				<p>Once you have a client, use one of the supported methods on the interface or call an unsupported method using <code>.cmd</code>, e.g.:</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { EthClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ethercast/eth-jsonrpc-client'</span>;
-<span class="hljs-keyword">import</span> BigNumber <span class="hljs-keyword">from</span> <span class="hljs-string">'bignumber.js'</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { getClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ethercast/eth-jsonrpc-client'</span>;
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlockNumber</span>(<span class="hljs-params"></span>): <span class="hljs-title">BigNumber</span> </span>{
-    <span class="hljs-keyword">const</span> client: EthClient = getClient(<span class="hljs-string">'http://infura.node.io/my-api-key'</span>);
-    <span class="hljs-keyword">const</span> blockNumber = <span class="hljs-keyword">await</span> client.eth_blockNumber();
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`blockNumber is <span class="hljs-subst">${blockNumber}</span>`</span>);
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">printBlockNumber</span>(<span class="hljs-params"></span>): <span class="hljs-title">Promise</span>&lt;<span class="hljs-title">void</span>&gt; </span>{
+  <span class="hljs-keyword">const</span> validatedClient = getClient(<span class="hljs-string">'http://infura.node.io/my-api-key'</span>, <span class="hljs-literal">true</span>);
+  <span class="hljs-keyword">const</span> blockNumber = <span class="hljs-keyword">await</span> validatedClient.eth_blockNumber();
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`blockNumber is <span class="hljs-subst">${blockNumber}</span>`</span>);
 }</code></pre>
 				<h2 id="api-docs">API Docs</h2>
 				<p><a href="https://ethercast.github.io/eth-jsonrpc-client/">https://ethercast.github.io/eth-jsonrpc-client/</a></p>
