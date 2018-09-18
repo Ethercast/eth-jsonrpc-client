@@ -60,16 +60,14 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "@ethercast/model": "0.0.17",
+    "@ethercast/model": "^2.0.3",
     "cross-fetch": "^2.2.2",
-    "isomorphic-ws": "^4.0.1",
-    "joi": "^13.6.0"
+    "isomorphic-ws": "^4.0.1"
   },
   "peerDependencies": {
     "bignumber.js": ">5.0.0"
   },
   "devDependencies": {
-    "@types/joi": "^13.4.4",
     "@types/ws": "^6.0.1",
     "ava": "1.0.0-beta.7",
     "bignumber.js": "^7.2.1",
