@@ -1,6 +1,6 @@
 {
   "name": "@ethercast/eth-jsonrpc-client",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "JSON RPC client for Ethereum clients (geth/parity)",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
