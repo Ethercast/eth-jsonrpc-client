@@ -6,8 +6,8 @@
    [npm]: https://www.npmjs.com/package/@ethercast/eth-jsonrpc-client
    [npm-svg]: https://img.shields.io/npm/v/@ethercast/eth-jsonrpc-client.svg?style=flat
 
-Lightweight HTTP and WebSocket JSON RPC client for Ethereum, compatible with both geth and parity, made for polling blocks from Ethercast. 
-Great for when Web3 is too heavy.
+Lightweight HTTP and WebSocket JSON RPC client for Ethereum, compatible with both geth and parity, made for polling blocks for the Ethercast project. 
+Great for when Web3 is too heavy, and the only functionality required is to query the JSON RPC.
 
 ## Installation
 `npm install --save @ethercast/eth-jsonrpc-client`
